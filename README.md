@@ -4,7 +4,7 @@
 
 > **Problem statement:** Pricing across a product's lifecycle: the new-to-online seller.
 
-**Live demo:** `` *(replace after enabling GitHub Pages)*
+**Live demo:** `https://github.com/Suvetha2006/Meesho_DICE_Price-Mitra` *(replace after enabling GitHub Pages)*
 
 ---
 
