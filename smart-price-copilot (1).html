@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Price Copilot - Team SponsHers</title>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf4e6;--card:#fff;--ink:#3a0a3a;--mut:#7a5f7a;--pri:#570a57;--acc:#f9a11b;--ok:#1d7a4a;--bad:#c62f4a;--line:#e8d9c4;--soft:#f3e6f3;--btn:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c0f1c;--card:#2a172a;--ink:#f6e9f6;--mut:#c2a5c2;--pri:#e7a6e7;--ok:#4cd08a;--bad:#ff7a90;--line:#4a2f4a;--soft:#3a213a;--btn:#1c0f1c}}
+:root[data-theme="dark"]{--bg:#1c0f1c;--card:#2a172a;--ink:#f6e9f6;--mut:#c2a5c2;--pri:#e7a6e7;--ok:#4cd08a;--bad:#ff7a90;--line:#4a2f4a;--soft:#3a213a;--btn:#1c0f1c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 'Mukta',system-ui,sans-serif;overflow-x:hidden}
+header,main{max-width:1040px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:16px}
+h1{margin:0;font-size:1.5rem;font-weight:800;color:var(--pri)}
+header p{margin:2px 0 14px;color:var(--mut);font-size:.92rem}
+main{display:grid;gap:14px;grid-template-columns:minmax(0,1fr);padding-bottom:32px}
+main>div{display:grid;gap:14px;min-width:0;align-content:start}
+@media(min-width:860px){main{grid-template-columns:350px minmax(0,1fr);align-items:start}}
+section,details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+h2{margin:0 0 10px;font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+summary{cursor:pointer;font-weight:800}
+details[open] summary{margin-bottom:6px}
+label{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;font-size:.82rem;color:var(--mut);margin-top:10px;margin-bottom:4px;line-height:1.25}
+input,select{display:block;width:100%;height:38px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;align-items:end}
+.g>div{min-width:0;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.tag{display:inline-block;flex:none;font-size:.68rem;line-height:1.5;padding:0 7px;border-radius:99px;background:var(--soft);color:var(--pri);font-weight:600;white-space:nowrap}
+.tag:empty{display:none}
+label .tag{margin-left:0}
+.tag.me{background:var(--acc);color:#3a0a3a}
+.sw{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:.88rem}
+.sw input{width:18px;height:18px;flex:none;margin:3px 0 0;accent-color:var(--pri)}
+.sw label{display:block;margin:0;color:var(--ink);font-size:.88rem;line-height:1.4}
+.copilot{border-left:5px solid var(--acc)}
+.copilot p{margin:4px 0}
+.big{font-size:2.2rem;font-weight:800;color:var(--pri);line-height:1.1;margin:2px 0}
+.bar{position:relative;height:16px;border-radius:9px;background:linear-gradient(90deg,var(--bad),var(--acc) 30%,var(--ok));margin:34px 0 12px}
+.mk{position:absolute;top:-7px;width:4px;height:30px;background:var(--ink);border-radius:2px;transform:translateX(-2px)}
+.mk span{position:absolute;bottom:100%;margin-bottom:2px;left:50%;transform:translateX(-50%);font-size:.75rem;font-weight:600;white-space:nowrap}
+.mk.l span{left:-2px;transform:none}
+.mk.r span{left:auto;right:-2px;transform:none}
+.lbl{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:.82rem;color:var(--mut)}
+.day1{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:16px 0 4px}
+.badge{display:inline-block;padding:2px 12px;border-radius:99px;font-weight:800;font-size:.85rem;white-space:nowrap}
+.Healthy{background:var(--ok);color:#fff}.Underpriced{background:var(--acc);color:#3a0a3a}.Overpriced,.Loss{background:var(--bad);color:#fff}
+input[type=range]{padding:0;height:24px;accent-color:var(--pri);background:transparent;border:0}
+.wf{display:grid;grid-template-columns:minmax(90px,140px) minmax(0,1fr) 72px;gap:8px 10px;align-items:center;font-size:.85rem}
+.wf i{display:block;height:12px;border-radius:6px;background:var(--pri);min-width:2px}
+.wf i.m{background:var(--acc)}.wf i.t{background:var(--mut)}
+.wf b{text-align:right;white-space:nowrap}
+.stop{background:var(--soft);border:2px solid var(--bad);border-radius:12px;padding:12px}
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 0}
+.chips span{display:inline-block;padding:1px 10px;border-radius:99px;border:1px solid var(--line);font-size:.85rem}
+.note{font-size:.78rem;color:var(--mut);margin:10px 0 0}
+button{font:inherit;cursor:pointer;border:0;border-radius:9px;padding:8px 14px;background:var(--pri);color:var(--btn);font-weight:600}
+#apply{margin-top:4px}
+@media(max-width:520px){#apply{width:100%}.big{font-size:1.9rem}}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+<h1>Smart Price Copilot</h1>
+<p>Give us what only you know. Meesho's AI layer fills in the rest, and you can override anything.</p>
+</header>
+<main>
+<div>
+<section>
+<h2>1. You provide <span class="tag">all optional</span></h2>
+<label for="cat">Category</label><select id="cat"></select>
+<div class="g">
+<div><label for="st">Selling from</label><select id="st"></select></div>
+<div><label for="per">Period</label><select id="per"></select></div>
+</div>
+<div class="g" id="sf"></div>
+<div class="sw"><input type="checkbox" id="tr"><label for="tr">Product already has traction (drops launch ad spend)</label></div>
+<p class="note">Leave a box empty and Meesho uses its estimate (shown in grey). Type a number to use your own.</p>
+</section>
+<details open>
+<summary>2. Meesho's estimates: view or override</summary>
+<div class="g" id="mf"></div>
+<p class="note">Demo values are assumptions. In production they come from Meesho's category data, rate card and live listings.</p>
+</details>
+</div>
+
+<div>
+<section class="copilot" aria-live="polite">
+<h2>Meesho AI layer <span class="tag" id="conf"></span></h2>
+<p id="ai"></p>
+</section>
+<section aria-live="polite">
+<h2>Cost to Serve → Floor</h2>
+<div class="wf" id="wf"></div>
+<p class="note" id="calc"></p>
+</section>
+<section aria-live="polite">
+<h2>Suggested price</h2>
+<div id="stop" class="stop hide"></div>
+<div id="ok">
+<div class="lbl"><span>Safe price range</span><span id="sea"></span></div>
+<div class="big" id="range"></div>
+<div class="bar"><div class="mk" id="mk"><span id="mkl"></span></div></div>
+<div class="lbl"><span id="fl"></span><span id="ce"></span></div>
+<p class="day1">Day-1 price: <b id="rec" style="font-size:1.4rem;color:var(--pri)"></b><span class="badge" id="hb"></span></p>
+<p class="note" id="why" style="margin:0 0 10px"></p>
+<label for="pr" style="justify-content:flex-start;gap:4px">Your final price: <b id="prv"></b></label>
+<input type="range" id="pr">
+<p id="keep" style="margin:10px 0"></p>
+<button id="apply">Accept suggested price</button>
+<p class="chips" id="comps"></p>
+</div>
+</section>
+</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const CAT={
+kurta:{n:"Women's kurtas",cogs:220,pack:10,rto:17,ret:8,lr:120,lt:100,adb:1500,ord:100,comps:[420,430,440,450],seas:{reg:1,fest:1.12,off:.92},k:.25},
+saree:{n:"Sarees",cogs:380,pack:15,rto:12,ret:10,lr:140,lt:120,adb:1200,ord:80,comps:[560,590,610,640,650],seas:{reg:1,fest:1.2,off:.9},k:.3},
+tshirt:{n:"Men's T-shirts",cogs:170,pack:8,rto:20,ret:12,lr:100,lt:90,adb:1440,ord:120,comps:[280,299,310,320],seas:{reg:1,fest:1.05,off:.95},k:.25},
+bedsheet:{n:"Bedsheets",cogs:330,pack:20,rto:9,ret:6,lr:130,lt:110,adb:1200,ord:60,comps:[520,540,560,580],seas:{reg:1,fest:1.1,off:.93},k:.3},
+gift:{n:"Gift hampers",cogs:260,pack:25,rto:7,ret:4,lr:130,lt:110,adb:1000,ord:50,comps:[540,560,590,600],seas:{reg:1,fest:1.25,off:.9},k:.6}};
+const ST={tn:{n:"Tamil Nadu",z:0,r:0},up:{n:"Uttar Pradesh",z:10,r:3},mh:{n:"Maharashtra",z:5,r:-1}};
+const PER={reg:"Regular season",fest:"Festive peak",off:"Off-season"};
+const SF=[["cogs","COGS (₹)"],["mg","Min margin (%)"],["adb","Launch ad budget (₹)"],["wt","Weight (g)"]];
+const MF=[["pack","Packaging (₹)"],["fr","Freight (₹)"],["rto","RTO rate (%)"],["ret","Return rate (%)"],["lr","Loss per RTO (₹)"],["lt","Loss per return (₹)"],["ord","Early orders"],["md","Market median (₹)"],["si","Seasonal index"],["k","Elasticity k"]];
+const slab=w=>w<=500?50:w<=1000?75:w<=2000?110:150;
+const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const med=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const mk=a=>a.map(([id,l])=>`<div><label for="${id}"><span>${l}</span><span class="tag" id="t_${id}"></span></label><input id="${id}" type="number" min="0" step="any" inputmode="decimal"></div>`).join("");
+$("sf").innerHTML=mk(SF);$("mf").innerHTML=mk(MF);
+$("cat").innerHTML=Object.entries(CAT).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+$("st").innerHTML=Object.entries(ST).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+$("per").innerHTML=Object.entries(PER).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+let price=null;
+
+function run(reset){
+ const c=CAT[$("cat").value],s=ST[$("st").value],per=$("per").value;
+ const gv=id=>$(id).value===""?null:+$(id).value;
+ const wt=gv("wt")??500;
+ const sg={cogs:c.cogs,mg:15,adb:c.adb,wt:500,pack:c.pack,fr:slab(wt)+s.z,rto:c.rto+s.r,ret:c.ret,lr:c.lr,lt:c.lt,ord:c.ord,md:Math.round(med(c.comps)),si:c.seas[per],k:c.k};
+ const v={},own={};
+ for(const id in sg){const g=gv(id);own[id]=g!==null;v[id]=g??sg[id];
+  $(id).placeholder=sg[id];const t=$("t_"+id);t.textContent=own[id]?"you":"Meesho";t.className="tag"+(own[id]?" me":"")}
+ const m=Math.min(v.mg,90)/100;
+ const gl=.18*v.fr;
+ const rb=v.rto/100*v.lr+v.ret/100*v.lt;
+ const ad=$("tr").checked?0:v.adb/Math.max(v.ord,1);
+ const cts=v.cogs+v.pack+gl+rb+ad;
+ const fx=cts/(1-m),g=fx>2500?.18:.05,floor=Math.round(fx*(1+g));
+ const ceil=Math.round(v.md*v.si);
+ const n=[own.cogs,own.mg,own.adb].filter(Boolean).length;
+ $("conf").textContent=["Low confidence","Lower confidence","Medium confidence","High confidence"][n];
+ const lo=Math.min(...c.comps),hi=Math.max(...c.comps);
+ $("ai").innerHTML=`<b>${c.n} in ${s.n}</b><br>RTO ${v.rto}% · returns ${v.ret}% · freight ${inr(v.fr)} · packaging ${inr(v.pack)} · ads ${inr(ad)}/order<br>Other vendors sell similar items for <b>${inr(lo)}–${inr(hi)}</b> (median ${inr(med(c.comps))}).`+
+  (n===0?`<br><b>You skipped all inputs</b>, so this is a general price from category data. Add your COGS and margin to personalise it.`:`<br>You gave ${n} of 3 key inputs. Meesho estimated the rest.`);
+ const rows=[["COGS",v.cogs,""],["Packaging",v.pack,""],["GST on freight",gl,""],["RTO + return buffer",rb,""],["Launch ads",ad,""],["Cost to Serve",cts,"t"],["Margin",fx-cts,"m"],["GST",floor-fx,"m"],["Floor",floor,"t"]];
+ const mx=Math.max(...rows.map(r=>r[1]),1);
+ $("wf").innerHTML=rows.map(r=>`<span>${r[0]}</span><i class="${r[2]}" style="width:${Math.max(r[1]/mx*100,1)}%"></i><b>${inr(r[1])}</b>`).join("");
+ $("calc").textContent=`Floor = ${inr(cts)} ÷ (1 − ${Math.round(m*100)}%) = ${inr(fx)} ex-GST, × (1 + ${Math.round(g*100)}% GST). Ceiling = ${inr(v.md)} × ${v.si} seasonal index.`;
+ const bad=floor>ceil;
+ $("stop").classList.toggle("hide",!bad);$("ok").classList.toggle("hide",bad);
+ if(bad){
+  $("stop").innerHTML=`<b>Don't list this product yet.</b><br>Your floor (${inr(floor)}) is above what the market will bear (${inr(ceil)}). You would lose money at market price.<br>To fit, cut your Cost to Serve by about ${inr(cts-ceil/(1+g)*(1-m))} (cheaper sourcing, lighter pack) or accept a lower margin.`;return}
+ let rec=Math.round((floor+v.k*(ceil-floor)+1)/10)*10-1;rec=Math.min(Math.max(rec,floor),ceil);
+ if(reset||price===null)price=rec;
+ const pr=$("pr");pr.min=Math.round(floor*.9);pr.max=Math.round(ceil*1.1);pr.value=price;
+ $("sea").textContent=v.si!==1?"Seasonal index "+v.si:"";
+ $("range").textContent=inr(floor)+" – "+inr(ceil);
+ $("fl").textContent="Floor "+inr(floor);$("ce").textContent="Ceiling "+inr(ceil);
+ $("rec").textContent=inr(rec);
+ $("why").textContent=`Floor + k × (Ceiling − Floor), with k = ${v.k} for this category.`;
+ $("comps").innerHTML="Live comparables: "+c.comps.map(x=>`<span>${inr(x)}</span>`).join("");
+ $("apply").onclick=()=>{price=rec;pr.value=rec;show()};
+ window._s={floor,ceil,g,cts};show();
+}
+function show(){
+ const {floor,ceil,g,cts}=window._s,p=+$("pr").value;price=p;
+ $("prv").textContent=inr(p);
+ const lo=+$("pr").min,hi=+$("pr").max;
+ const pct=Math.min(100,Math.max(0,(p-lo)/(hi-lo)*100));
+ $("mk").style.left=pct+"%";$("mkl").textContent=inr(p);
+ $("mk").className="mk"+(pct<12?" l":pct>88?" r":"");
+ const ex=p/(1+g),kept=ex-cts;
+ const h=p<floor?"Loss":p>ceil?"Overpriced":p<floor+.15*(ceil-floor)?"Underpriced":"Healthy";
+ $("hb").textContent=h==="Loss"?"Below floor":h;$("hb").className="badge "+h;
+ $("keep").innerHTML=`You keep <b>${inr(kept)}</b> per order (${(kept/ex*100).toFixed(0)}% margin) after costs and GST.`+(p>ceil?" Above market ceiling: buyers will likely choose cheaper listings.":"");
+}
+["cat","st","per","tr",...SF.map(a=>a[0]),...MF.map(a=>a[0])].forEach(i=>$(i).addEventListener("input",()=>run(true)));
+$("pr").addEventListener("input",show);
+run(true);
+</script>
+</body>
+</html>
